@@ -8,11 +8,11 @@ import UserRouter from '../server/routes/userRoute.js'
 const app = express();
 const port = process.env.PORT || 4000;
 
-
+const allowedOrgins = ['http://localhost:5173']
+app.use(cors({origin:allowedOrgins,credentials:true}));
 
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({credentials:true}));
 connectDB();
 
 app.use('/',UserRouter);

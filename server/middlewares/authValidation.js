@@ -17,7 +17,7 @@ export const registerValidation = (req,res,next)=>{
 export const LoginValidation = (req,res,next)=>{
     const Schema = joi.object({
         email: joi.string().email().required(),
-        password: joi.string().min(3).max(1000).required()
+        password: joi.string().min(1).max(1000).required()
     })
 
     const {error} = Schema.validate(req.body);

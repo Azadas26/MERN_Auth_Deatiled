@@ -1,14 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Header from '../contexts/Header'
+import NavBar from '../components/NavBar'
 
 const Home = () => {
-  return (
-    <div>
-        <Header/>
-        <Outlet/>
-    </div>
-  )
+    return (
+        <div>
+            <NavBar />
+            <Outlet />
+        </div>
+    )
 }
 
 export default Home

@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import UserModel from '../models/userModels.js'
 import jsonwebtoken from 'jsonwebtoken'
 import transporter from '../config/modeMailer.js';
+import { EMAIL_VERIFY_TEMPLATE } from '../config/emailTemplate.js';
 
 export const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -122,11 +123,8 @@ export const sendVerificationOtp = async (req, res) => {
             from: process.env.SENDER_EMAIL, // sender address
             to: user.email, // list of receivers
             subject: "Hello Welcomt to MERN Authentiction", // Subject line
-            text: "MERN Email Authentication confirm", // plain text body
-            html: ` <div>
-                     <h1>Otp Account verification Proccess</h1>
-                     <h3>Your Opt is ${otp} Do not share anyone</h3>
-                     </div>`, // html body
+           // text: "MERN Email Authentication confirm", // plain text body
+            html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}",otp)
         };
 
 
@@ -190,7 +188,7 @@ export const verifyEmail = async (req, res) => {
 
 export const isUserauthenticatedornot = (req,res)=>{
     try {
-        return res.status(200).json({success:false,message:"It's an Autherized User"})
+        return res.status(200).json({success:true,message:"It's an Autherized User"})
     } catch (error) {
         return res.status(500).json({success:false,message:error.message})
     }
@@ -238,7 +236,8 @@ export const sendRestOtp = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
     const {email, otp, newpassword} = req.body;
-
+    console.log(req.body);
+    
     if(!email || !otp || !newpassword){
         return res.status(400).json({success:false,message:"Invalid Input"});
     }
@@ -283,7 +282,8 @@ export const getUserDetails = async (req,res)=>{
         if(!user){
             return res.status(400).json({success:false,message:"UserNot Available"})
         }
-
+        console.log(user.isAccountVerified);
+        
         return res.status(200).json({success:true,user:{
             name:user.name,
             isAccountVerified:user.isAccountVerified
